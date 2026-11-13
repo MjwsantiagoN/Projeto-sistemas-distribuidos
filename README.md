@@ -1,4 +1,4 @@
-# Sistema de Arquivos Distribuídos Simplificado — Parcial 1
+# Sistema de Arquivos Distribuídos Simplificado
 
 ## Escopo desta versão
 
@@ -12,7 +12,7 @@ Há quatro processos:
 
 O Cliente envia uma mensagem JSON ao Servidor Central. O Central identifica o servidor de destino (A ou B), encaminha uma nova requisição HTTP e devolve ao Cliente a resposta recebida do servidor de arquivos.
 
-**Esta versão não implementa armazenamento de arquivos.** Upload, download, listagem, exclusão, metadados, replicação e autenticação ficam fora do escopo desta primeira demonstração.
+**Entrega Parcial 2:** os Servidores de Arquivos já implementam armazenamento, listagem, download e remoção de arquivos (ver seção *API dos Servidores de Arquivos*). A integração com o Servidor Central e o Cliente está em andamento.
 
 ## Requisitos
 
@@ -35,6 +35,14 @@ python servidor_arquivos.py --nome A --porta 8001
 python servidor_arquivos.py --nome B --porta 8002
 ```
 
+Cada servidor de arquivos cria sua própria pasta ao lado do `.py` quando é iniciado (`armazenamento_A/` e `armazenamento_B/`). Uma pasta não tem nada a ver com a outra, então o A não enxerga os arquivos do B e vice-versa.
+
+Para aceitar conexões vindas de outro computador, precisa adicionar `--host 0.0.0.0`:
+
+```bash
+python servidor_arquivos.py --nome A --porta 8001 --host 0.0.0.0
+```
+
 ### Terminal 3 — Servidor Central
 
 ```bash
@@ -47,7 +55,7 @@ python servidor_central.py
 python cliente.py
 ```
 
-No Cliente, escolha `A` ou `B`, digite uma mensagem e observe a resposta. Para encerrar o cliente, digite `sair`. Para encerrar cada servidor, use `Ctrl+C no respectivo terminal`.
+No Cliente, escolha `A` ou `B`, digite uma mensagem e observe a resposta. Para encerrar o cliente, digite `sair`. Para encerrar cada servidor, use `Ctrl+C` no respectivo terminal.
 
 ## Protocolo e contrato HTTP
 
@@ -86,6 +94,108 @@ Exemplo de resposta do Servidor de Arquivos:
 
 O Servidor Central devolve essa resposta ao Cliente, identificando o destino utilizado.
 
+## API dos Servidores de Arquivos
+
+Quem conversa com os servidores de arquivos é o Servidor Central. Tudo é enviado em JSON, e o conteúdo dos arquivos vai em base64, porque arquivos como PDF ou imagem não são texto e não dá para colocar os bytes direto dentro do JSON.
+
+Os servidores não sabem o nome original dos arquivos, só o ID, que é gerado pelo Central. Quem guarda a relação entre nome e ID é o Central.
+
+Rotas do servidor de arquivos:
+
+- `GET /status` — mostra se o servidor está no ar e quantos arquivos ele tem
+- `GET /arquivos` — lista os arquivos guardados
+- `PUT /arquivos/{id}` — salva um arquivo (se o ID já existir, sobrescreve)
+- `GET /arquivos/{id}` — baixa um arquivo
+- `DELETE /arquivos/{id}` — apaga um arquivo
+
+Para salvar, o corpo da requisição é só o conteúdo em base64:
+
+```json
+{"conteudo_base64": "b2xhIG11bmRv"}
+```
+
+E o download devolve algo assim:
+
+```json
+{
+  "status": "sucesso",
+  "servidor": "A",
+  "id": "teste1",
+  "tamanho": 9,
+  "conteudo_base64": "b2xhIG11bmRv"
+}
+```
+
+As outras rotas respondem no mesmo formato, sempre com `status` e `servidor`. Quando é um arquivo novo, o `PUT` devolve 201; quando sobrescreve, devolve 200.
+
+A rota `POST /comunicacao` da Parcial 1 continua funcionando, para o Central atual não quebrar enquanto ele é atualizado.
+
+### Erros
+
+Quando dá erro, a resposta vem assim:
+
+```json
+{"status": "erro", "servidor": "A", "mensagem": "descrição do erro"}
+```
+
+O servidor devolve 404 quando o arquivo (ou a rota) não existe, e 400 quando a requisição vem errada: ID inválido, JSON mal formado, sem o campo `conteudo_base64`, base64 inválido ou corpo maior que 15 MB.
+
+### Decisões de implementação
+
+O ID do arquivo só pode ter letras, números, `_` e `-`. Fizemos isso porque, sem essa checagem, dava para mandar um ID tipo `..\..\arquivo` e o servidor acabaria lendo ou gravando fora da pasta dele.
+
+Na hora de salvar, o servidor escreve primeiro em um arquivo `.tmp` e só depois renomeia para o nome final com `os.replace`. Assim, se o processo cair no meio da escrita, não sobra um arquivo pela metade na pasta.
+
+Como o servidor usa `ThreadingHTTPServer`, ele pode atender várias requisições ao mesmo tempo. Para evitar que duas operações mexam na pasta juntas (por exemplo, listar enquanto outra requisição apaga um arquivo), usamos um `threading.Lock`.
+
+A gravação usa `PUT`, e mandar o mesmo arquivo com o mesmo ID duas vezes não cria uma cópia, só sobrescreve. Isso é útil caso o Central dê timeout e precise tentar de novo.
+
+Por fim, cada requisição pode ter no máximo 15 MB, para ninguém conseguir derrubar o servidor mandando um arquivo enorme que lotaria a memória.
+
+### Testando só os servidores de arquivos
+
+Dá para testar os servidores de arquivos sozinhos, sem o Central e o Cliente. Com o Servidor A rodando, em outro terminal:
+
+```bash
+# status
+curl -s http://127.0.0.1:8001/status
+
+# gravar ("b2xhIG11bmRv" = "ola mundo" em base64)
+curl -s -X PUT http://127.0.0.1:8001/arquivos/teste1 -H "Content-Type: application/json" -d '{"conteudo_base64": "b2xhIG11bmRv"}'
+
+# listar
+curl -s http://127.0.0.1:8001/arquivos
+
+# baixar
+curl -s http://127.0.0.1:8001/arquivos/teste1
+
+# remover
+curl -s -X DELETE http://127.0.0.1:8001/arquivos/teste1
+```
+
+No PowerShell do Windows esses comandos `curl` não funcionam do mesmo jeito, então use:
+
+```powershell
+$b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("ola mundo"))
+Invoke-RestMethod -Method Put -Uri http://127.0.0.1:8001/arquivos/teste1 -ContentType "application/json" -Body (@{conteudo_base64=$b64} | ConvertTo-Json)
+Invoke-RestMethod http://127.0.0.1:8001/arquivos
+$r = Invoke-RestMethod http://127.0.0.1:8001/arquivos/teste1
+[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($r.conteudo_base64))
+Invoke-RestMethod -Method Delete -Uri http://127.0.0.1:8001/arquivos/teste1
+```
+
+O que testamos:
+
+| Cenário | Resultado |
+|---|---|
+| Gravar, listar, baixar e remover | `201`, arquivo aparece na lista, conteúdo igual ao enviado, `200` |
+| Gravar de novo com o mesmo ID | `200`, sem criar cópia |
+| Arquivo binário de 1 MB | Arquivo baixado igual ao enviado |
+| Baixar ou remover arquivo que não existe | `404` |
+| ID malicioso (`..\..\x`) ou base64 inválido | `400` |
+| 6 gravações ao mesmo tempo | Todas gravadas certinho |
+| Gravar no A e listar o B | O arquivo não aparece no B |
+
 ## Testes da demonstração
 
 1. Inicie os quatro processos e envie uma mensagem para A.
@@ -106,15 +216,14 @@ O teste 3 é um cenário adverso de indisponibilidade de um componente distribu�
 
 ## Observação sobre execução em computadores diferentes
 
-Para executar em máquinas diferentes, substitua `127.0.0.1` pelos endereços IP acessíveis de cada máquina e ajuste os endereços em `servidor_central.py` e `cliente.py`. Também será necessário permitir as portas correspondentes no firewall. Na demonstração local, `127.0.0.1` é suficiente para provar a comunicação entre processos independentes no mesmo computador.
+Para rodar em computadores diferentes, os servidores de arquivos precisam ser iniciados com `--host 0.0.0.0`, senão eles só aceitam conexões da própria máquina. Não precisa mexer no código deles.
 
-## Evidências para anexar à entrega
+No `servidor_central.py` e no `cliente.py`, troque `127.0.0.1` pelo IP da máquina onde está cada servidor (dá para ver o IP com `ipconfig` no Windows).
 
-Registre capturas de tela mostrando:
-- os dois Servidores de Arquivos iniciados;
-- o Servidor Central iniciado;
-- o Cliente recebendo resposta ao testar A;
-- o Cliente recebendo resposta ao testar B;
-- o erro HTTP 502 quando um dos servidores estiver desligado.
+Também é preciso liberar as portas 8000 a 8002 no firewall das máquinas que rodam servidores. No Windows, num PowerShell aberto como administrador:
 
-O diagrama arquitetural do grupo pode ser mantido sem alterações; esta implementação demonstra o fluxo de comunicação nele representado.
+```powershell
+New-NetFirewallRule -DisplayName "SD Projeto" -Direction Inbound -Protocol TCP -LocalPort 8000-8002 -Action Allow
+```
+
+Para testar tudo num computador só, `127.0.0.1` já funciona.
