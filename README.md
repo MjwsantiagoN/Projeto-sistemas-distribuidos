@@ -1,229 +1,127 @@
 # Sistema de Arquivos Distribuídos Simplificado
 
-## Escopo desta versão
+## Escopo da Parcial 2
 
-Esta implementação atende ao objetivo da primeira parcial: demonstrar comunicação entre processos independentes usando HTTP/REST.
+O sistema possui quatro processos independentes: Cliente, Servidor Central e dois Servidores de Arquivos (A e B). A comunicação entre os componentes ocorre por HTTP/REST, com mensagens JSON.
 
-Há quatro processos:
-1. Cliente;
-2. Servidor Central;
-3. Servidor de Arquivos A;
-4. Servidor de Arquivos B.
+O Cliente solicita upload, listagem, download e remoção ao Servidor Central. O Central mantém o índice de metadados (nome original, ID único e servidor responsável), escolhe o destino de novos arquivos e encaminha as operações aos servidores de arquivos. Os servidores A e B armazenam somente o conteúdo identificado pelo ID.
 
-O Cliente envia uma mensagem JSON ao Servidor Central. O Central identifica o servidor de destino (A ou B), encaminha uma nova requisição HTTP e devolve ao Cliente a resposta recebida do servidor de arquivos.
-
-**Entrega Parcial 2:** os Servidores de Arquivos já implementam armazenamento, listagem, download e remoção de arquivos (ver seção *API dos Servidores de Arquivos*). A integração com o Servidor Central e o Cliente está em andamento.
+O índice de metadados é salvo em `metadados.json`, ao lado de `servidor_central.py`, para sobreviver à reinicialização do Central. Os arquivos permanecem nas pastas independentes `armazenamento_A/` e `armazenamento_B/`.
 
 ## Requisitos
 
 - Python 3.9 ou superior;
-- Não é necessário instalar dependências externas: a implementação utiliza apenas a biblioteca padrão do Python.
+- Nenhuma dependência externa.
 
 ## Como executar
 
-Abra quatro terminais na pasta que contém os arquivos. Execute os comandos abaixo, mantendo cada processo em seu próprio terminal.
+Abra quatro terminais na pasta do projeto e mantenha cada processo em execução.
 
-### Terminal 1 — Servidor de Arquivos A
+**Terminal 1 — Servidor de Arquivos A**
 
 ```bash
 python servidor_arquivos.py --nome A --porta 8001
 ```
 
-### Terminal 2 — Servidor de Arquivos B
+**Terminal 2 — Servidor de Arquivos B**
 
 ```bash
 python servidor_arquivos.py --nome B --porta 8002
 ```
 
-Cada servidor de arquivos cria sua própria pasta ao lado do `.py` quando é iniciado (`armazenamento_A/` e `armazenamento_B/`). Uma pasta não tem nada a ver com a outra, então o A não enxerga os arquivos do B e vice-versa.
-
-Para aceitar conexões vindas de outro computador, precisa adicionar `--host 0.0.0.0`:
-
-```bash
-python servidor_arquivos.py --nome A --porta 8001 --host 0.0.0.0
-```
-
-### Terminal 3 — Servidor Central
+**Terminal 3 — Servidor Central**
 
 ```bash
 python servidor_central.py
 ```
 
-### Terminal 4 — Cliente
+**Terminal 4 — Cliente**
 
 ```bash
 python cliente.py
 ```
 
-No Cliente, escolha `A` ou `B`, digite uma mensagem e observe a resposta. Para encerrar o cliente, digite `sair`. Para encerrar cada servidor, use `Ctrl+C` no respectivo terminal.
+No cliente, escolha uma operação no menu. Não é necessário escolher A ou B: o Central decide onde armazenar cada novo arquivo e consulta os metadados nas operações seguintes. Encerre cada servidor com `Ctrl+C`.
 
-## Protocolo e contrato HTTP
+## Contrato HTTP
 
-Todos os processos usam HTTP sobre TCP e trocam dados no formato JSON.
+### Cliente → Servidor Central
 
-- Cliente → Central: `POST http://127.0.0.1:8000/comunicacao`
-- Central → Servidor A: `POST http://127.0.0.1:8001/comunicacao`
-- Central → Servidor B: `POST http://127.0.0.1:8002/comunicacao`
+Todas as operações usam `POST http://127.0.0.1:8000/comunicacao` com `Content-Type: application/json`.
 
-Exemplo de requisição enviada pelo Cliente:
+**Upload**
 
 ```json
 {
-  "servidor": "A",
-  "mensagem": "Teste de comunicacao"
+  "operacao": "upload",
+  "nome": "relatorio.pdf",
+  "conteudo_base64": "..."
 }
 ```
 
-O Central encaminha ao servidor escolhido somente a mensagem:
+Resposta de sucesso: HTTP 201, com `resultado` contendo `status`, `nome`, `id` e `servidor`.
+
+**Listagem**
 
 ```json
-{
-  "mensagem": "Teste de comunicacao"
-}
+{"operacao": "listar"}
 ```
 
-Exemplo de resposta do Servidor de Arquivos:
+Resposta: HTTP 200, com `resultado.arquivos`, uma lista de objetos contendo `nome`, `id` e `servidor`.
+
+**Download**
 
 ```json
-{
-  "status": "sucesso",
-  "servidor": "A",
-  "mensagem_recebida": "Teste de comunicacao"
-}
+{"operacao": "download", "nome": "relatorio.pdf"}
 ```
 
-O Servidor Central devolve essa resposta ao Cliente, identificando o destino utilizado.
+Resposta: HTTP 200, com `resultado.conteudo_base64` e o nome original.
 
-## API dos Servidores de Arquivos
-
-Quem conversa com os servidores de arquivos é o Servidor Central. Tudo é enviado em JSON, e o conteúdo dos arquivos vai em base64, porque arquivos como PDF ou imagem não são texto e não dá para colocar os bytes direto dentro do JSON.
-
-Os servidores não sabem o nome original dos arquivos, só o ID, que é gerado pelo Central. Quem guarda a relação entre nome e ID é o Central.
-
-Rotas do servidor de arquivos:
-
-- `GET /status` — mostra se o servidor está no ar e quantos arquivos ele tem
-- `GET /arquivos` — lista os arquivos guardados
-- `PUT /arquivos/{id}` — salva um arquivo (se o ID já existir, sobrescreve)
-- `GET /arquivos/{id}` — baixa um arquivo
-- `DELETE /arquivos/{id}` — apaga um arquivo
-
-Para salvar, o corpo da requisição é só o conteúdo em base64:
+**Remoção**
 
 ```json
-{"conteudo_base64": "b2xhIG11bmRv"}
+{"operacao": "remover", "nome": "relatorio.pdf"}
 ```
 
-E o download devolve algo assim:
+Resposta: HTTP 200, com confirmação em `resultado`.
 
-```json
-{
-  "status": "sucesso",
-  "servidor": "A",
-  "id": "teste1",
-  "tamanho": 9,
-  "conteudo_base64": "b2xhIG11bmRv"
-}
-```
+Erros são devolvidos com um status HTTP apropriado e um objeto JSON contendo `status: "erro"` e `mensagem`. O Central usa HTTP 404 para arquivo inexistente, HTTP 409 para nome já cadastrado e HTTP 502 quando não consegue alcançar um servidor de arquivos.
 
-As outras rotas respondem no mesmo formato, sempre com `status` e `servidor`. Quando é um arquivo novo, o `PUT` devolve 201; quando sobrescreve, devolve 200.
+### Servidor Central → Servidores de Arquivos
 
-A rota `POST /comunicacao` da Parcial 1 continua funcionando, para o Central atual não quebrar enquanto ele é atualizado.
+O Central utiliza a API REST já implementada nos servidores:
 
-### Erros
+- `GET /status` — verifica disponibilidade;
+- `GET /arquivos` — lista IDs armazenados;
+- `PUT /arquivos/{id}` — grava o conteúdo enviado em `conteudo_base64`;
+- `GET /arquivos/{id}` — recupera o conteúdo em Base64;
+- `DELETE /arquivos/{id}` — remove o arquivo.
 
-Quando dá erro, a resposta vem assim:
+O nome original não é enviado ao servidor de arquivos. O Central gera um ID único e mantém a associação entre nome, ID e servidor no arquivo `metadados.json`.
 
-```json
-{"status": "erro", "servidor": "A", "mensagem": "descrição do erro"}
-```
+## Distribuição dos arquivos
 
-O servidor devolve 404 quando o arquivo (ou a rota) não existe, e 400 quando a requisição vem errada: ID inválido, JSON mal formado, sem o campo `conteudo_base64`, base64 inválido ou corpo maior que 15 MB.
+Para novos uploads, o Central conta quantos arquivos do índice pertencem a cada servidor e escolhe aquele com menos arquivos. Em caso de empate, escolhe A. A distribuição é simples e adequada ao MVP; não representa balanceamento por espaço livre ou capacidade real.
 
-### Decisões de implementação
+Nomes duplicados são recusados com HTTP 409. O cliente não precisa informar o servidor para listar, baixar ou remover: essas operações são resolvidas pelo Central usando os metadados.
 
-O ID do arquivo só pode ter letras, números, `_` e `-`. Fizemos isso porque, sem essa checagem, dava para mandar um ID tipo `..\..\arquivo` e o servidor acabaria lendo ou gravando fora da pasta dele.
+## Limites e observações
 
-Na hora de salvar, o servidor escreve primeiro em um arquivo `.tmp` e só depois renomeia para o nome final com `os.replace`. Assim, se o processo cair no meio da escrita, não sobra um arquivo pela metade na pasta.
+- O corpo máximo aceito pelo Central é 14 MiB; os servidores de arquivos aceitam até 15 MiB.
+- O conteúdo é codificado em Base64 para poder trafegar dentro do JSON. Por isso, o tamanho máximo do arquivo em si é menor que o limite do corpo HTTP.
+- Os metadados são centralizados em um arquivo JSON local. Se esse arquivo for apagado ou corrompido, o Central perde a associação entre nomes e IDs, mesmo que os bytes ainda estejam nas pastas dos servidores.
+- O Central e o cliente estão configurados inicialmente para `127.0.0.1`. Para execução em máquinas diferentes, configure os endereços IP no código e inicie os servidores com `--host 0.0.0.0`; libere as portas correspondentes no firewall.
 
-Como o servidor usa `ThreadingHTTPServer`, ele pode atender várias requisições ao mesmo tempo. Para evitar que duas operações mexam na pasta juntas (por exemplo, listar enquanto outra requisição apaga um arquivo), usamos um `threading.Lock`.
+## Testes manuais recomendados
 
-A gravação usa `PUT`, e mandar o mesmo arquivo com o mesmo ID duas vezes não cria uma cópia, só sobrescreve. Isso é útil caso o Central dê timeout e precise tentar de novo.
+1. Inicie os quatro processos.
+2. Faça upload de um arquivo e confira a confirmação com o servidor de destino.
+3. Liste os arquivos e confirme que o nome aparece uma única vez.
+4. Baixe o arquivo para outro diretório e compare o conteúdo com o original.
+5. Remova o arquivo e confirme que ele não aparece mais na listagem.
+6. Tente baixar ou remover um nome inexistente; o Central deve responder HTTP 404.
+7. Tente enviar novamente um nome já cadastrado; o Central deve responder HTTP 409.
+8. Encerre um servidor de arquivos e tente operar sobre um arquivo nele armazenado; o Central deve responder HTTP 502 sem apagar os metadados.
+9. Reinicie o Central e liste os arquivos; os metadados devem continuar disponíveis.
 
-Por fim, cada requisição pode ter no máximo 15 MB, para ninguém conseguir derrubar o servidor mandando um arquivo enorme que lotaria a memória.
-
-### Testando só os servidores de arquivos
-
-Dá para testar os servidores de arquivos sozinhos, sem o Central e o Cliente. Com o Servidor A rodando, em outro terminal:
-
-```bash
-# status
-curl -s http://127.0.0.1:8001/status
-
-# gravar ("b2xhIG11bmRv" = "ola mundo" em base64)
-curl -s -X PUT http://127.0.0.1:8001/arquivos/teste1 -H "Content-Type: application/json" -d '{"conteudo_base64": "b2xhIG11bmRv"}'
-
-# listar
-curl -s http://127.0.0.1:8001/arquivos
-
-# baixar
-curl -s http://127.0.0.1:8001/arquivos/teste1
-
-# remover
-curl -s -X DELETE http://127.0.0.1:8001/arquivos/teste1
-```
-
-No PowerShell do Windows esses comandos `curl` não funcionam do mesmo jeito, então use:
-
-```powershell
-$b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("ola mundo"))
-Invoke-RestMethod -Method Put -Uri http://127.0.0.1:8001/arquivos/teste1 -ContentType "application/json" -Body (@{conteudo_base64=$b64} | ConvertTo-Json)
-Invoke-RestMethod http://127.0.0.1:8001/arquivos
-$r = Invoke-RestMethod http://127.0.0.1:8001/arquivos/teste1
-[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($r.conteudo_base64))
-Invoke-RestMethod -Method Delete -Uri http://127.0.0.1:8001/arquivos/teste1
-```
-
-O que testamos:
-
-| Cenário | Resultado |
-|---|---|
-| Gravar, listar, baixar e remover | `201`, arquivo aparece na lista, conteúdo igual ao enviado, `200` |
-| Gravar de novo com o mesmo ID | `200`, sem criar cópia |
-| Arquivo binário de 1 MB | Arquivo baixado igual ao enviado |
-| Baixar ou remover arquivo que não existe | `404` |
-| ID malicioso (`..\..\x`) ou base64 inválido | `400` |
-| 6 gravações ao mesmo tempo | Todas gravadas certinho |
-| Gravar no A e listar o B | O arquivo não aparece no B |
-
-## Testes da demonstração
-
-1. Inicie os quatro processos e envie uma mensagem para A.
-2. Envie outra mensagem para B.
-3. Encerre o processo do Servidor B com `Ctrl+C` e envie uma mensagem para B. O Central deve responder com HTTP 502, indicando que não conseguiu alcançar o servidor de destino.
-4. Reinicie B para restaurar a execução normal.
-
-O teste 3 é um cenário adverso de indisponibilidade de um componente distribuído.
-
-## Relação com os requisitos da primeira parcial
-
-- **Arquitetura:** Cliente, Servidor Central e dois processos de Servidor de Arquivos.
-- **Responsabilidades:** cada processo possui uma função delimitada.
-- **Mecanismo de comunicação:** requisições HTTP POST com payload JSON.
-- **Execução distribuída:** os componentes são processos independentes e podem ser executados em máquinas diferentes após ajustar os endereços configurados no código.
-- **Demonstração funcional:** o Cliente recebe a resposta originada no Servidor de Arquivos por intermédio do Central.
-- **Cenário adverso:** indisponibilidade de um servidor de arquivos, tratada com resposta HTTP 502.
-
-## Observação sobre execução em computadores diferentes
-
-Para rodar em computadores diferentes, os servidores de arquivos precisam ser iniciados com `--host 0.0.0.0`, senão eles só aceitam conexões da própria máquina. Não precisa mexer no código deles.
-
-No `servidor_central.py` e no `cliente.py`, troque `127.0.0.1` pelo IP da máquina onde está cada servidor (dá para ver o IP com `ipconfig` no Windows).
-
-Também é preciso liberar as portas 8000 a 8002 no firewall das máquinas que rodam servidores. No Windows, num PowerShell aberto como administrador:
-
-```powershell
-New-NetFirewallRule -DisplayName "SD Projeto" -Direction Inbound -Protocol TCP -LocalPort 8000-8002 -Action Allow
-```
-
-Para testar tudo num computador só, `127.0.0.1` já funciona.
+Os testes manuais precisam ser executados no ambiente do grupo e suas evidências (logs e capturas de tela) devem ser anexadas à entrega. A documentação não afirma que esses testes foram executados apenas por estarem descritos aqui.
