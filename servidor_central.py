@@ -75,13 +75,13 @@ def requisitar_servidor(servidor, metodo, caminho, corpo=None):
         raise ConnectionError(str(erro)) from erro
 
 
-def escolher_servidor():
-    """Distribui novos arquivos para o servidor com menos arquivos no indice."""
+def ordem_servidores():
+    """Prioriza o que tem menos arquivos."""
     quantidade = {nome: 0 for nome in SERVIDORES}
     for info in metadados.values():
         if info["servidor"] in quantidade:
             quantidade[info["servidor"]] += 1
-    return min(SERVIDORES, key=lambda nome: quantidade[nome])
+    return sorted(SERVIDORES, key=lambda nome: (quantidade[nome], nome))
 
 
 class CentralHandler(BaseHTTPRequestHandler):
@@ -146,15 +146,24 @@ class CentralHandler(BaseHTTPRequestHandler):
             if nome in metadados:
                 self.send_json(409, {"status": "erro", "mensagem": "Ja existe um arquivo com esse nome."})
                 return
-            destino = escolher_servidor()
             id_arquivo = uuid.uuid4().hex
-            try:
-                status, retorno = requisitar_servidor(
-                    destino, "PUT", f"/arquivos/{id_arquivo}", {"conteudo_base64": conteudo}
-                )
-            except ConnectionError as erro:
-                self.send_json(502, {"status": "erro", "servidor": destino,
-                                     "mensagem": "Servidor de arquivos indisponivel.", "detalhe": str(erro)})
+            destino = None
+            falhas = []
+            # Tenta o servidor que tem prioridade, se ele estiver fora do ar, tenta o proximo
+            for candidato in ordem_servidores():
+                try:
+                    status, retorno = requisitar_servidor(
+                        candidato, "PUT", f"/arquivos/{id_arquivo}", {"conteudo_base64": conteudo}
+                    )
+                    destino = candidato
+                    break
+                except ConnectionError as erro:
+                    falhas.append(f"{candidato}: {erro}")
+                    self.log_operacao(f"servidor {candidato} indisponivel, tentando o proximo")
+            if destino is None:
+                self.send_json(502, {"status": "erro",
+                                     "mensagem": "Nenhum servidor de arquivos disponivel.",
+                                     "detalhe": "; ".join(falhas)})
                 return
             if status not in (200, 201) or retorno.get("status") != "sucesso":
                 self.send_json(status if 400 <= status < 600 else 502,

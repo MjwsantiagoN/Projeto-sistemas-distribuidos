@@ -44,32 +44,6 @@ class FileServerHandler(BaseHTTPRequestHandler):
         else:
             self.erro(404, "Endpoint nao encontrado")
 
-    def do_POST(self):
-        if self.path != "/comunicacao":
-            self.send_json(404, {"status": "erro", "mensagem": "Endpoint nao encontrado"})
-            return
-
-        try:
-            tamanho = int(self.headers.get("Content-Length", "0"))
-            if tamanho <= 0 or tamanho > 1_000_000:
-                self.send_json(400, {"status": "erro", "mensagem": "Corpo da requisicao invalido"})
-                return
-            dados = json.loads(self.rfile.read(tamanho).decode("utf-8"))
-        except (ValueError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(400, {"status": "erro", "mensagem": "JSON invalido"})
-            return
-
-        mensagem = dados.get("mensagem")
-        if not isinstance(mensagem, str) or not mensagem.strip():
-            self.send_json(400, {"status": "erro", "mensagem": "Informe uma mensagem nao vazia"})
-            return
-
-        self.send_json(200, {
-            "status": "sucesso",
-            "servidor": self.server.nome,
-            "mensagem_recebida": mensagem
-        })
-
     def send_json(self, status, payload):
         corpo = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
