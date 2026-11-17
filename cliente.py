@@ -67,24 +67,36 @@ def upload():
     status, dados = enviar_operacao(operacao)
     resultado = tratar_resposta(status, dados, "upload")
     if resultado is not None:
-        print(f"✓ Upload realizado: {resultado.get('nome')} (servidor {resultado.get('servidor')}).")
+        print(f"✓ Upload realizado: {resultado.get('nome')} (servidores {resultado.get('servidor')}).")
+        if resultado.get("degradado"):
+            print("⚠ Redundância reduzida: um servidor estava fora do ar. A réplica será criada quando ele voltar.")
 
 
-def listar():
-    status, dados = enviar_operacao({"operacao": "listar"})
-    resultado = tratar_resposta(status, dados, "listagem")
+def listar(termo=None):
+    operacao = {"operacao": "buscar", "termo": termo} if termo else {"operacao": "listar"}
+    status, dados = enviar_operacao(operacao)
+    resultado = tratar_resposta(status, dados, "busca" if termo else "listagem")
     if resultado is None:
         return
     arquivos = resultado.get("arquivos")
     if not isinstance(arquivos, list):
         print("✗ Resposta de listagem inválida.")
         return
-    print("Arquivos disponíveis:")
+    print(f"Resultado da busca por '{termo}':" if termo else "Arquivos disponíveis:")
     if not arquivos:
         print("(nenhum arquivo)")
     else:
         for arquivo in arquivos:
-            print(f"- {arquivo['nome']} [servidor {arquivo['servidor']}]")
+            aviso = " (degradado)" if arquivo.get("degradado") else ""
+            print(f"- {arquivo['nome']} [réplicas: {arquivo['servidor']}]{aviso}")
+
+
+def buscar():
+    termo = input("Buscar por nome (trecho): ").strip()
+    if not termo:
+        print("✗ Informe um trecho do nome.")
+        return
+    listar(termo)
 
 
 def download():
@@ -132,12 +144,12 @@ def remover():
 
 def menu():
     print("\n----------------------\nSistema de Arquivos Distribuídos\n----------------------\n")
-    print("1 - Upload\n2 - Listar arquivos\n3 - Download\n4 - Remover arquivo\n0 - Sair")
+    print("1 - Upload\n2 - Listar arquivos\n3 - Download\n4 - Remover arquivo\n5 - Buscar por nome\n0 - Sair")
     return input("\nEscolha: ").strip()
 
 
 def main():
-    operacoes = {"1": upload, "2": listar, "3": download, "4": remover}
+    operacoes = {"1": upload, "2": listar, "3": download, "4": remover, "5": buscar}
     while True:
         try:
             escolha = menu()
