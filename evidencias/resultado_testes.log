@@ -1,0 +1,67 @@
+======================================================================
+TESTES DO SISTEMA DE ARQUIVOS DISTRIBUIDOS
+Execucao: 2026-11-16 21:35:53
+======================================================================
+
+CENARIO 1 - Fluxo normal (upload, listar, download, remover)
+  [PASSOU] Upload retorna HTTP 201  -> servidor=A,B
+  [PASSOU] Listagem contem o arquivo uma unica vez
+  [PASSOU] Download retorna conteudo identico (SHA-256)  -> 35d4118fc5818cba...
+  [PASSOU] Remocao retorna HTTP 200
+  [PASSOU] Listagem vazia apos remocao
+
+CENARIO 2 - Erros de uso
+  [PASSOU] Download de nome inexistente -> 404
+  [PASSOU] Remocao de nome inexistente -> 404
+  [PASSOU] Upload de nome duplicado -> 409
+  [PASSOU] Nome com '../' recusado pelo Central -> 400
+  [PASSOU] Path traversal no servidor de arquivos recusado -> 400
+
+CENARIO 3 - Concorrencia (adverso)
+  [PASSOU] 20 uploads simultaneos do MESMO nome: exatamente 1 sucesso (201) e 19 conflitos (409)  -> 201=1, 409=19
+  [PASSOU] Sem copias extras: exatamente 1 replica em cada servidor (2 no total)  -> {'A': 1, 'B': 1}
+  [PASSOU] 20 uploads simultaneos de nomes DISTINTOS: todos 201
+  [PASSOU] Todos os 20 arquivos tem 2 replicas (A e B)
+  [PASSOU] Cada servidor guarda os 20 arquivos  -> {'A': 20, 'B': 20}
+
+CENARIO 4 - Redundancia: queda do servidor B (adverso)
+  [PASSOU] Arquivo gravado em DUAS replicas (A e B)
+  >> Encerrando o processo do Servidor de Arquivos B
+  [PASSOU] Download continua funcionando com B fora (lido da replica em A) -> 200  -> servidor=A
+  [PASSOU] Upload com B fora e aceito de forma degradada (1 replica) -> 201
+  [PASSOU] Remocao com B fora: 200 e remocao pendente registrada em B  -> ['B']
+  >> Reiniciando B (recuperacao + reparo automatico)
+  [PASSOU] Reparo automatico restaurou a redundancia e concluiu a remocao pendente
+  [PASSOU] 'novo_degradado.txt' agora existe tambem em B
+  [PASSOU] Arquivo removido durante a queda NAO sobrou em B (sem orfao)
+
+CENARIO 5 - Redundancia: replica apagada do disco de A
+  [PASSOU] Download cai para a replica de B quando A perdeu o arquivo -> 200
+  [PASSOU] Reparo detectou a replica ausente e recriou em A
+
+CENARIO 6 - Todos os servidores de arquivos fora (adverso)
+  [PASSOU] Upload sem nenhum servidor disponivel -> 502  -> Nenhum servidor de arquivos disponivel.
+  [PASSOU] Download sem nenhuma replica disponivel -> 502
+  [PASSOU] Remocao sem nenhuma replica alcancavel -> 502
+  [PASSOU] Metadados preservados (arquivo continua listado, upload falho nao deixou entrada)
+
+CENARIO 7 - Reinicio do Servidor Central
+  [PASSOU] Metadados (inclusive lista de replicas) identicos apos reiniciar o Central  -> 1 arquivo(s)
+  [PASSOU] Download funciona apos reinicio do Central
+
+CENARIO 8 - Idempotencia da gravacao (reenvio apos timeout)
+  [PASSOU] PUT repetido: 1o -> 201 (criado), 2o -> 200 (sobrescrito)  -> 201,200
+  [PASSOU] PUT repetido nao duplica o arquivo
+
+CENARIO 9 - Busca por nome
+  [PASSOU] Busca por trecho, sem diferenciar maiusculas/acentos  -> ['Relatório_Final.pdf', 'relatorio_parcial.txt']
+  [PASSOU] Busca sem resultado devolve lista vazia (200)
+  [PASSOU] Busca com termo vazio -> 400
+
+CENARIO 10 - Interface web
+  [PASSOU] GET / devolve a pagina do frontend
+  [PASSOU] Operacao 'estado' informa A e B online
+
+======================================================================
+RESUMO: 37/37 verificacoes passaram
+======================================================================

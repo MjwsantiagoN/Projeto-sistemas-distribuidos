@@ -1,0 +1,156 @@
+Servidor de Arquivos A iniciado em http://127.0.0.1:8001
+Pasta de armazenamento: /tmp/sd_teste_5dc40wv3/armazenamento_A
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "PUT /arquivos/681872be1f99421a8df7f369f30914cf HTTP/1.1" 201 -
+[A] arquivo 681872be1f99421a8df7f369f30914cf gravado (200000 bytes)
+[A] 127.0.0.1 - "GET /arquivos/681872be1f99421a8df7f369f30914cf HTTP/1.1" 200 -
+[A] download de 681872be1f99421a8df7f369f30914cf (200000 bytes)
+[A] 127.0.0.1 - "DELETE /arquivos/681872be1f99421a8df7f369f30914cf HTTP/1.1" 200 -
+[A] arquivo 681872be1f99421a8df7f369f30914cf removido
+[A] 127.0.0.1 - "PUT /arquivos/94d3d8771dfd45da8085e61766b75fb1 HTTP/1.1" 201 -
+[A] arquivo 94d3d8771dfd45da8085e61766b75fb1 gravado (1 bytes)
+[A] 127.0.0.1 - "DELETE /arquivos/94d3d8771dfd45da8085e61766b75fb1 HTTP/1.1" 200 -
+[A] arquivo 94d3d8771dfd45da8085e61766b75fb1 removido
+[A] 127.0.0.1 - "PUT /arquivos/..%2F..%2Fcentral HTTP/1.1" 400 -
+[A] 127.0.0.1 - "PUT /arquivos/a88210cec36b4e42af8bf49c2e52d8f2 HTTP/1.1" 201 -
+[A] arquivo a88210cec36b4e42af8bf49c2e52d8f2 gravado (2 bytes)
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "DELETE /arquivos/a88210cec36b4e42af8bf49c2e52d8f2 HTTP/1.1" 200 -
+[A] arquivo a88210cec36b4e42af8bf49c2e52d8f2 removido
+[A] 127.0.0.1 - "PUT /arquivos/f2ce7e0d05dc4489b7a59fdd52e4ec70 HTTP/1.1" 201 -
+[A] arquivo f2ce7e0d05dc4489b7a59fdd52e4ec70 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/b3559e7c2f414ee69b234ec7a55c9b8d HTTP/1.1" 201 -
+[A] arquivo b3559e7c2f414ee69b234ec7a55c9b8d gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/3ecc54fe879a454287d347a1806fb3f1 HTTP/1.1" 201 -
+[A] arquivo 3ecc54fe879a454287d347a1806fb3f1 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/16a3795a61404219917bb909c2120555 HTTP/1.1" 201 -
+[A] arquivo 16a3795a61404219917bb909c2120555 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/87abfee8cb3b4a0d8a2d1b090042cadc HTTP/1.1" 201 -
+[A] arquivo 87abfee8cb3b4a0d8a2d1b090042cadc gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/421a287f13454ffb8bb9da01e4f2488c HTTP/1.1" 201 -
+[A] arquivo 421a287f13454ffb8bb9da01e4f2488c gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/71bfdd4a016e4f03977a4af09ac72b11 HTTP/1.1" 201 -
+[A] arquivo 71bfdd4a016e4f03977a4af09ac72b11 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/0b749e1dbd5c4e53a9ccca15526a1429 HTTP/1.1" 201 -
+[A] arquivo 0b749e1dbd5c4e53a9ccca15526a1429 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/57edf4bd244840e0b5e3bc7c83143d53 HTTP/1.1" 201 -
+[A] arquivo 57edf4bd244840e0b5e3bc7c83143d53 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/57f846225a4e4f548a81a3630af0d087 HTTP/1.1" 201 -
+[A] arquivo 57f846225a4e4f548a81a3630af0d087 gravado (2 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/20aad02da5f9414b965236da482ee9e9 HTTP/1.1" 201 -
+[A] arquivo 20aad02da5f9414b965236da482ee9e9 gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/3ed982acb39243ceb03a98e36ea1029e HTTP/1.1" 201 -
+[A] arquivo 3ed982acb39243ceb03a98e36ea1029e gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/460bf85bd1f942108526df7b2ec9c4cc HTTP/1.1" 201 -
+[A] arquivo 460bf85bd1f942108526df7b2ec9c4cc gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/4bf3f751ccda461fb4ddfde0ed4a17dd HTTP/1.1" 201 -
+[A] arquivo 4bf3f751ccda461fb4ddfde0ed4a17dd gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/f58e4d368e7b43caa363df629dca7ca9 HTTP/1.1" 201 -
+[A] arquivo f58e4d368e7b43caa363df629dca7ca9 gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/dd1d88ca19764c5ca3c32d717422245d HTTP/1.1" 201 -
+[A] arquivo dd1d88ca19764c5ca3c32d717422245d gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/046f9ae873624ef0b706cc32d7153296 HTTP/1.1" 201 -
+[A] arquivo 046f9ae873624ef0b706cc32d7153296 gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/7fdfd5272d94481a9bc11fa3376e717b HTTP/1.1" 201 -
+[A] arquivo 7fdfd5272d94481a9bc11fa3376e717b gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/c9cef4f0a5ca441ba9e38f726351246e HTTP/1.1" 201 -
+[A] arquivo c9cef4f0a5ca441ba9e38f726351246e gravado (3 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/f68819728cfc4d29bc5a3824341d88cd HTTP/1.1" 201 -
+[A] arquivo f68819728cfc4d29bc5a3824341d88cd gravado (3 bytes)
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "DELETE /arquivos/f2ce7e0d05dc4489b7a59fdd52e4ec70 HTTP/1.1" 200 -
+[A] arquivo f2ce7e0d05dc4489b7a59fdd52e4ec70 removido
+[A] 127.0.0.1 - "DELETE /arquivos/b3559e7c2f414ee69b234ec7a55c9b8d HTTP/1.1" 200 -
+[A] arquivo b3559e7c2f414ee69b234ec7a55c9b8d removido
+[A] 127.0.0.1 - "DELETE /arquivos/3ecc54fe879a454287d347a1806fb3f1 HTTP/1.1" 200 -
+[A] arquivo 3ecc54fe879a454287d347a1806fb3f1 removido
+[A] 127.0.0.1 - "DELETE /arquivos/87abfee8cb3b4a0d8a2d1b090042cadc HTTP/1.1" 200 -
+[A] arquivo 87abfee8cb3b4a0d8a2d1b090042cadc removido
+[A] 127.0.0.1 - "DELETE /arquivos/0b749e1dbd5c4e53a9ccca15526a1429 HTTP/1.1" 200 -
+[A] arquivo 0b749e1dbd5c4e53a9ccca15526a1429 removido
+[A] 127.0.0.1 - "DELETE /arquivos/16a3795a61404219917bb909c2120555 HTTP/1.1" 200 -
+[A] arquivo 16a3795a61404219917bb909c2120555 removido
+[A] 127.0.0.1 - "DELETE /arquivos/421a287f13454ffb8bb9da01e4f2488c HTTP/1.1" 200 -
+[A] arquivo 421a287f13454ffb8bb9da01e4f2488c removido
+[A] 127.0.0.1 - "DELETE /arquivos/71bfdd4a016e4f03977a4af09ac72b11 HTTP/1.1" 200 -
+[A] arquivo 71bfdd4a016e4f03977a4af09ac72b11 removido
+[A] 127.0.0.1 - "DELETE /arquivos/57f846225a4e4f548a81a3630af0d087 HTTP/1.1" 200 -
+[A] arquivo 57f846225a4e4f548a81a3630af0d087 removido
+[A] 127.0.0.1 - "DELETE /arquivos/57edf4bd244840e0b5e3bc7c83143d53 HTTP/1.1" 200 -
+[A] arquivo 57edf4bd244840e0b5e3bc7c83143d53 removido
+[A] 127.0.0.1 - "DELETE /arquivos/20aad02da5f9414b965236da482ee9e9 HTTP/1.1" 200 -
+[A] arquivo 20aad02da5f9414b965236da482ee9e9 removido
+[A] 127.0.0.1 - "DELETE /arquivos/4bf3f751ccda461fb4ddfde0ed4a17dd HTTP/1.1" 200 -
+[A] arquivo 4bf3f751ccda461fb4ddfde0ed4a17dd removido
+[A] 127.0.0.1 - "DELETE /arquivos/3ed982acb39243ceb03a98e36ea1029e HTTP/1.1" 200 -
+[A] arquivo 3ed982acb39243ceb03a98e36ea1029e removido
+[A] 127.0.0.1 - "DELETE /arquivos/460bf85bd1f942108526df7b2ec9c4cc HTTP/1.1" 200 -
+[A] arquivo 460bf85bd1f942108526df7b2ec9c4cc removido
+[A] 127.0.0.1 - "DELETE /arquivos/dd1d88ca19764c5ca3c32d717422245d HTTP/1.1" 200 -
+[A] arquivo dd1d88ca19764c5ca3c32d717422245d removido
+[A] 127.0.0.1 - "DELETE /arquivos/f58e4d368e7b43caa363df629dca7ca9 HTTP/1.1" 200 -
+[A] arquivo f58e4d368e7b43caa363df629dca7ca9 removido
+[A] 127.0.0.1 - "DELETE /arquivos/046f9ae873624ef0b706cc32d7153296 HTTP/1.1" 200 -
+[A] arquivo 046f9ae873624ef0b706cc32d7153296 removido
+[A] 127.0.0.1 - "DELETE /arquivos/7fdfd5272d94481a9bc11fa3376e717b HTTP/1.1" 200 -
+[A] arquivo 7fdfd5272d94481a9bc11fa3376e717b removido
+[A] 127.0.0.1 - "DELETE /arquivos/f68819728cfc4d29bc5a3824341d88cd HTTP/1.1" 200 -
+[A] arquivo f68819728cfc4d29bc5a3824341d88cd removido
+[A] 127.0.0.1 - "DELETE /arquivos/c9cef4f0a5ca441ba9e38f726351246e HTTP/1.1" 200 -
+[A] arquivo c9cef4f0a5ca441ba9e38f726351246e removido
+[A] 127.0.0.1 - "PUT /arquivos/22416162a0bc437ab7e770463b7c2fe7 HTTP/1.1" 201 -
+[A] arquivo 22416162a0bc437ab7e770463b7c2fe7 gravado (21 bytes)
+[A] 127.0.0.1 - "GET /arquivos/22416162a0bc437ab7e770463b7c2fe7 HTTP/1.1" 200 -
+[A] download de 22416162a0bc437ab7e770463b7c2fe7 (21 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/7b06a0629cc6481c84af4e85b549929b HTTP/1.1" 201 -
+[A] arquivo 7b06a0629cc6481c84af4e85b549929b gravado (15 bytes)
+[A] 127.0.0.1 - "DELETE /arquivos/22416162a0bc437ab7e770463b7c2fe7 HTTP/1.1" 200 -
+[A] arquivo 22416162a0bc437ab7e770463b7c2fe7 removido
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos/7b06a0629cc6481c84af4e85b549929b HTTP/1.1" 200 -
+[A] download de 7b06a0629cc6481c84af4e85b549929b (15 bytes)
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "DELETE /arquivos/7b06a0629cc6481c84af4e85b549929b HTTP/1.1" 200 -
+[A] arquivo 7b06a0629cc6481c84af4e85b549929b removido
+[A] 127.0.0.1 - "GET /arquivos/7b06a0629cc6481c84af4e85b549929b HTTP/1.1" 404 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "PUT /arquivos/7b06a0629cc6481c84af4e85b549929b HTTP/1.1" 201 -
+[A] arquivo 7b06a0629cc6481c84af4e85b549929b gravado (15 bytes)
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+--- processo A encerrado pelo teste ---
+Servidor de Arquivos A iniciado em http://127.0.0.1:8001
+Pasta de armazenamento: /tmp/sd_teste_5dc40wv3/armazenamento_A
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[A] 127.0.0.1 - "PUT /arquivos/id-teste-123 HTTP/1.1" 201 -
+[A] arquivo id-teste-123 gravado (14 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/id-teste-123 HTTP/1.1" 200 -
+[A] arquivo id-teste-123 sobrescrito (14 bytes)
+[A] 127.0.0.1 - "GET /arquivos HTTP/1.1" 200 -
+[A] 127.0.0.1 - "DELETE /arquivos/id-teste-123 HTTP/1.1" 200 -
+[A] arquivo id-teste-123 removido
+[A] 127.0.0.1 - "PUT /arquivos/5d857a9eadf64006903ab2604819d1e5 HTTP/1.1" 201 -
+[A] arquivo 5d857a9eadf64006903ab2604819d1e5 gravado (1 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/e176f0ac63e448c9a3c7a8d13608552f HTTP/1.1" 201 -
+[A] arquivo e176f0ac63e448c9a3c7a8d13608552f gravado (1 bytes)
+[A] 127.0.0.1 - "PUT /arquivos/e71402f4ccfe43f5b738f11f145a7eff HTTP/1.1" 201 -
+[A] arquivo e71402f4ccfe43f5b738f11f145a7eff gravado (1 bytes)
+[A] 127.0.0.1 - "DELETE /arquivos/5d857a9eadf64006903ab2604819d1e5 HTTP/1.1" 200 -
+[A] arquivo 5d857a9eadf64006903ab2604819d1e5 removido
+[A] 127.0.0.1 - "DELETE /arquivos/e176f0ac63e448c9a3c7a8d13608552f HTTP/1.1" 200 -
+[A] arquivo e176f0ac63e448c9a3c7a8d13608552f removido
+[A] 127.0.0.1 - "DELETE /arquivos/e71402f4ccfe43f5b738f11f145a7eff HTTP/1.1" 200 -
+[A] arquivo e71402f4ccfe43f5b738f11f145a7eff removido
+[A] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+--- processo A encerrado pelo teste ---

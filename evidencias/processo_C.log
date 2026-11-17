@@ -1,0 +1,165 @@
+Servidor Central iniciado em http://127.0.0.1:8000
+Interface web: http://127.0.0.1:8000/  |  Replicas por arquivo: 2
+Metadados: /tmp/sd_teste_5dc40wv3/metadados.json
+[CENTRAL] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de relatorio.bin gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] download de relatorio.bin obtido do servidor A
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo relatorio.bin removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 404 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 404 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de dup.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo dup.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 400 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] upload de disputado.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 409 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo disputado.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_00.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_01.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_02.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_05.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_03.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_06.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_07.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_04.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_09.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_08.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_10.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_12.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_13.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_11.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_15.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_14.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_16.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_17.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_19.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de par_18.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_00.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_01.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_02.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_03.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_04.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_05.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_06.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_07.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_08.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_09.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_10.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_11.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_12.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_13.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_14.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_15.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_16.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_17.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_18.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo par_19.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de doc.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] download de doc.txt obtido do servidor A
+[CENTRAL] servidor B indisponivel, novo_degradado.txt nao foi gravado nele
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de novo_degradado.txt gravado em 1/2 replicas (A) [DEGRADADO]
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo doc.txt removido de A; remocao PENDENTE em B
+[CENTRAL] REPARO: remocao pendente concluida no servidor B
+[CENTRAL] REPARO: novo_degradado.txt copiado de A para B (redundancia restaurada)
+[CENTRAL] replica de novo_degradado.txt no servidor A respondeu HTTP 404, tentando outra
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] download de novo_degradado.txt obtido do servidor B
+[CENTRAL] REPARO: replica de novo_degradado.txt ausente no servidor A; sera recriada
+[CENTRAL] REPARO: novo_degradado.txt copiado de B para A (redundancia restaurada)
+[CENTRAL] servidor A indisponivel, sem_servidor.txt nao foi gravado nele
+[CENTRAL] servidor B indisponivel, sem_servidor.txt nao foi gravado nele
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 502 -
+[CENTRAL] servidor B indisponivel, tentando outra replica de novo_degradado.txt
+[CENTRAL] servidor A indisponivel, tentando outra replica de novo_degradado.txt
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 502 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 502 -
+--- processo C encerrado pelo teste ---
+Servidor Central iniciado em http://127.0.0.1:8000
+Interface web: http://127.0.0.1:8000/  |  Replicas por arquivo: 2
+Metadados: /tmp/sd_teste_5dc40wv3/metadados.json
+[CENTRAL] 127.0.0.1 - "GET /status HTTP/1.1" 200 -
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] download de novo_degradado.txt obtido do servidor B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de Relatório_Final.pdf gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de relatorio_parcial.txt gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 201 -
+[CENTRAL] upload de fotos.zip gravado em 2/2 replicas (A, B)
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo Relatório_Final.pdf removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo relatorio_parcial.txt removido de A, B
+[CENTRAL] 127.0.0.1 - "POST /comunicacao HTTP/1.1" 200 -
+[CENTRAL] arquivo fotos.zip removido de A, B
+[CENTRAL] 127.0.0.1 - "GET / HTTP/1.1" 200 -
+--- processo C encerrado pelo teste ---
